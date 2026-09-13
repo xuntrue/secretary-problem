@@ -1,8 +1,13 @@
 import math
+import tkinter as tk
 
-from simulation import run_trial, run_batch, find_best_k
+from tkinter import ttk
+from simulation import run_trial, run_batch, find_best_k, TrialResult
 
-def main():
+from ui_play_tab import PlayTab
+from animation_controller import AnimationController
+
+def run_simulation():
     mode = "rank"
     near_optimal_top_m = 3
 
@@ -46,6 +51,20 @@ def main():
 
     print(f"Theoretical optimal k/n ratio: 1/e ≈ {1/math.e:.4f}")
     print(f"Achieved optimal k/n ratio  : {sweep['best_k']}/{n} = {sweep['best_k']/n}")
+
+def main():
+    root = tk.Tk()
+    root.title("Secretary Problem simulator")
+    root.geometry("900x350")
+    root.minsize(700, 400)
+
+    notebook = ttk.Notebook(root)
+    notebook.pack(fill="both", expand=True, padx=8, pady=8)
+
+    play_tab = PlayTab(notebook)
+    notebook.add(play_tab, text="Run trial")
+
+    root.mainloop()
 
 if __name__ == "__main__":
     main()
