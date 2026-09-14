@@ -1,4 +1,5 @@
 import random
+import bisect
 
 from dataclasses import dataclass, field
 from typing import List, Optional
@@ -54,7 +55,7 @@ def generate_candidates(
         else:
             raise ValueError(f"Unknown score_distribution: {score_distribution!r}")
 
-        if score_round_decimals is not None:
+        if score_round_decimals is not None: # round floating-points
             raw = [round(v, score_round_decimals) for v in raw]
         return raw
 
@@ -63,9 +64,11 @@ def generate_candidates(
 
 def _compute_rank_positions(values: List[float]) -> List[int]:
     """ Compute each candidate's rank position (1=worst, n_unique=best) """
-    unique_sorted = sorted(set(values))
-    rank_map = {v: i + 1 for i, v in enumerate(unique_sorted)}
-    return [rank_map[v] for v in values]
+    #unique_sorted = sorted(set(values))
+    #rank_map = {v: i + 1 for i, v in enumerate(unique_sorted)}
+    #return [rank_map[v] for v in values]
+    sorted_values = sorted(values)
+    return [bisect.bisect_right(sorted_values, v) for v in values]
 
 def run_trial(
     n: int,
@@ -98,7 +101,7 @@ def run_trial(
             if best_seen_in_observation is None or value > best_seen_in_observation:
                 best_seen_in_observation = value
         else:
-            beats_observation = (best_seen_in_observation is None) or (value > best_seen_in_observation)
+            beats_observation = (best_seen_in_observation is None) or (value >= best_seen_in_observation)
             if not hired and beats_observation: # Hire first candidate > baseline
                 decision = "hired"
                 hired = True
@@ -179,6 +182,7 @@ def run_batch(
         "no_hire_count": no_hire_count,
         "no_hire_rate": no_hire_count / num_trials,
         "mean_hired_value": (sum(hired_values) / len(hired_values)) if hired_values else None,
+        "expected_value": (sum(hired_values) / num_trials),
         "mean_hired_rank_position": (sum(hired_rank_positions) / len(hired_rank_positions)) if hired_rank_positions else None,
         "mean_best_possible_value": sum(best_possible_values) / len(best_possible_values),
     }
