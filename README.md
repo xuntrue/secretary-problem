@@ -78,6 +78,24 @@ better than the ~1/n chance of picking the best candidate at random. This
 project lets you verify that result yourself, by running many trials and
 watching where the success rate actually peaks.
 
+## Future extensions
+#Variants of the secretary problem in the literature:
+| Varient | Description |
+| ------- | ----------- |
+| Cardinal payoff | Select a highly-valued candidate instead of only the single best candidate. |
+| Multiple-choice secretary problem | Select more than one candidate |
+| Prophet inequalities | For the distribution-aware case |
+
+# Real-life examples to read about
+| Example | Description |
+| ------- | ----------- |
+| Job platforms | Platforms likes LinkedIn often surface only a subset of "top matches" to free-tier users, holding back stronger candidates behind a paid upgrade |
+| Freelance marketplaces | Freelancers who pay for "boosted" or "featured" placement appear earlier in a client's queue regardless of actual fit, skewing the sequence a client reviews |
+| E-commerce search results | Companies like Google sponsored/paid listings are often interleaved before more relevant organic results, meaning the "candidates" (products) you see first aren't a random or quality-ordered sample.|
+| Ride share apps | Some platforms prioritize drivers who've paid for priority dispatch over the nearest/best-rated driver |
+| Online Dating services | It's been reported that dating companies deliberately structuring the order that profiles are served so that the user has to pay a premium |
+
+
 ## License
 
 MIT License — see `LICENSE` for details.
